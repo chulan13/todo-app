@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet">
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Write smth down</h2>
+        <form id="task-form" action="/addtask" method="POST">
+            <input type="text" id="newtask" name="newtask" placeholder="add new task">
+            <button type="submit">Add Task</button>
+        </form>
+
+        <h2>Added Task</h2>
+        <% for (var i = 0; i < task.length; i++) { %>
+            <form action="/edittask" method="POST">
+                <li>
+                    <input type="hidden" name="oldTask" value="<%= task[i] %>">
+                    <input type="text" name="newTask" value="<%= task[i] %>">
+                    <button type="submit">Edit</button>
+                </li>
+            </form>
+        <% } %>
+        <form action="/removetask" method="POST">
+            <% for (var i = 0; i < task.length; i++) { %>
+                <li><input type="checkbox" name="check" value="<%= task[i] %>"> <%= task[i] %></li>
+            <% } %>
+            <button type="submit">Completed</button>
+        </form>
+
+        <h2>Completed Tasks</h2>
+        <form action="/retrieve" method="POST">
+            <% for (var i = 0; i < complete.length; i++) { %>
+                <li>
+                    <input type="checkbox" name="check" value="<%= complete[i] %>" checked>
+                    <%= complete[i] %>
+                </li>
+            <% } %>
+            <button type="submit">Uncompleted</button>
+        </form>
+    </div>
+
+    <h3>Change the theme</h3>
+    <button id="theme-toggle">Toggle Theme</button>
+
+    <h3>Change Text Style</h3>
+    <select id="text-style-select">
+        <option value="text-style-normal">Normal</option>
+        <option value="text-style-bold">Bold</option>
+        <option value="text-style-italic">Italic</option>
+        <option value="text-style-large">Large</option>
+    </select>
+
+    <script src="/main.js"></script>
+    <script>
+        document.getElementById('task-form').addEventListener('submit', function (e) {
+            const newTask = document.getElementById('newtask').value.trim();
+            if (!newTask) {
+                e.preventDefault();
+                alert('Task cannot be empty');
+            } else {
+                // Store new task in local storage for autofill
+                let storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                if (!storedTasks.includes(newTask)) {
+                    storedTasks.push(newTask);
+                    localStorage.setItem('tasks', JSON.stringify(storedTasks));
+                }
+            }
+        });
+
+        // Text style change
+        document.getElementById('text-style-select').addEventListener('change', function() {
+            document.body.className = document.body.className.replace(/text-style-\w+/g, '');
+            document.body.classList.add(this.value);
+            localStorage.setItem('textStyle', this.value);
+        });
+
+        // Load saved text style
+        const savedTextStyle = localStorage.getItem('textStyle');
+        if (savedTextStyle) {
+            document.body.classList.add(savedTextStyle);
+            document.getElementById('text-style-select').value = savedTextStyle;
+        }
+
+        // Suggestions
+        const taskSuggestions = document.getElementById('task-suggestions');
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+        storedTasks.forEach(task => {
+            const option = document.createElement('option');
+            option.value = task;
+            taskSuggestions.appendChild(option);
+        });
+    </script>
+</body>
+</html>

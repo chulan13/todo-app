@@ -1,0 +1,80 @@
+/* Light and dark themes */
+:root {
+    --background-color: purple;
+    --text-color: black;
+}
+
+body.light-theme {
+    --background-color: rgb(110, 49, 196);
+    --text-color: black;
+}
+
+body.dark-theme {
+    --background-color: black;
+    --text-color: pink;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+
+/* Moving container */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+ 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+ 
+.container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    min-height: 2rem;
+    width: 15rem;
+    padding: 10px;
+    background-color: rgb(200, 70, 176);
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    cursor: move;
+    user-select: none;
+}
+ 
+.container header {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+ 
+.draggable-container {
+    margin: 10px 0;
+}
+
+
+/* Text styles */
+.text-style-normal {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.text-style-bold {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.text-style-italic {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-style: italic;
+}
+
+.text-style-large {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+}
